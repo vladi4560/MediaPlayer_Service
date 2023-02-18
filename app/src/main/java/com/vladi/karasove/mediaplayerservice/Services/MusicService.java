@@ -16,7 +16,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.vladi.karasove.mediaplayerservice.MusicManager;
+import com.vladi.karasove.mediaplayerservice.system_managesr.MusicManager;
 import com.vladi.karasove.mediaplayerservice.R;
 
 public class MusicService extends Service {

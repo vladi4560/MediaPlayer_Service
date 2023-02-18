@@ -1,4 +1,4 @@
-package com.vladi.karasove.mediaplayerservice;
+package com.vladi.karasove.mediaplayerservice.system_managesr;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -32,19 +32,18 @@ public class MusicManager {
     private MusicManager(Context context1) {
         exoPlayer = new ExoPlayer.Builder(context1).build();
         setContext(context1);
+        songList = new ArrayList<>();
     }
 
     public static MusicManager getInstance(Context context) {
         if(player == null){
-
             player = new MusicManager(context);
         }
         return player;
     }
     public void fetchSongs() {
-        songList = new ArrayList<>();
-        Uri mediaStoreUri;
 
+        Uri mediaStoreUri;
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.Q){
             mediaStoreUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
             //mediaStoreUri = Uri.parse("content://Internal storage/Music");

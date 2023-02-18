@@ -1,4 +1,4 @@
-package com.vladi.karasove.mediaplayerservice;
+package com.vladi.karasove.mediaplayerservice.system_managesr;
 
 import android.content.Context;
 import android.hardware.Sensor;

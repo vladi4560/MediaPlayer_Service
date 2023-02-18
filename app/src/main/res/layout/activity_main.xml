@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.159">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/main_BTN_GYRO"
+            android:id="@+id/main_BTN_ACC"
             android:layout_width="20dp"
             android:layout_height="20dp"
             app:icon="@drawable/ic_gyroscope"

@@ -13,12 +13,13 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -30,8 +31,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.vladi.karasove.mediaplayerservice.Adapter.PlaylistAdapter;
 import com.vladi.karasove.mediaplayerservice.CallBack.CallBack_AdapterToMain;
 import com.vladi.karasove.mediaplayerservice.CallBack.CallBack_SensorToMain;
-import com.vladi.karasove.mediaplayerservice.MusicManager;
-import com.vladi.karasove.mediaplayerservice.SensorMangerACC;
+import com.vladi.karasove.mediaplayerservice.system_managesr.MusicManager;
+import com.vladi.karasove.mediaplayerservice.system_managesr.SensorMangerACC;
 import com.vladi.karasove.mediaplayerservice.Services.MusicService;
 import com.vladi.karasove.mediaplayerservice.Object.Audio;
 import com.vladi.karasove.mediaplayerservice.R;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         accelerometerManger = new SensorMangerACC(getApplicationContext());
         requestMediaPermission();
         musicManager = MusicManager.getInstance(this);
+
     }
 
 
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_CODE_PERMISSION_MEDIA: {
-                Log.d("pttt", "REQUEST_CODE_PERMISSION_CONTACTS");
                 boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
                 if (result) {
                     musicManager.fetchSongs();
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         previousBtn = findViewById(R.id.main_BTN_previousSong);
         playBtn = findViewById(R.id.main_BTN_playSong);
         nextBtn = findViewById(R.id.main_BTN_nextSong);
-        acceleBtn = findViewById(R.id.main_BTN_GYRO);
+        acceleBtn = findViewById(R.id.main_BTN_ACC);
         recyclerView = findViewById(R.id.main_RYC_playlist);
         noMusic = findViewById(R.id.main_TXT_noMusic);
         seekBar = findViewById(R.id.main_SKR_playerDuration);
@@ -196,17 +197,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void accelFeature() {
+        if(musicManager.getSongList().size() < 2){
+            return;
+        }
         if (accelerometerActive == false) {
+            acceleBtn.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
             accelerometerManger.startSensor();
             accelerometerManger.setCallBack_sensorToMain(callBack_sensorToMain);
             accelerometerActive = true;
         } else {
+            acceleBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.application_purple)));
             accelerometerManger.StopSensor();
             accelerometerActive = false;
         }
     }
 
     private void play_pauseSong() {
+        if(musicManager.getSongList().size() == 0){
+            return;
+        }
         if (musicManager.getExoPlayer().isPlaying()) {
             playBtn.setIcon(getDrawable(R.drawable.ic_play_button));
             musicManager.getExoPlayer().pause();
@@ -217,12 +226,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playPreviousSong() {
+        if(musicManager.getSongList().size() == 0){
+            return;
+        }
         musicManager.playPreviousSong();
         updateUI();
     }
 
 
     private void playNextSong() {
+        if(musicManager.getSongList().size() == 0){
+            return;
+        }
         musicManager.playNextSong();
         updateUI();
     }
